@@ -38,7 +38,7 @@
   * 撤回到最新版本的方法：
     * 如果命令窗口还存在提交的命令，可以找到提交时的commit id ，可以这样恢复：
       ```shell
-      $ git add readme.txt
+      $ git add readme.md
       $ git commit -m "append GPL"
       [master 3628164] append GPL
        1 file changed, 1 insertion(+), 1 deletion(-)

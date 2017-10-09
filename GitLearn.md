@@ -270,7 +270,20 @@
      1 file changed, 1 insertion(+)
     ```
 
-    ​
+    `git merge`命令用于合并指定分支到当前分支。合并后，再查看readme.md的内容，就可以看到了，和`dev`分支的最新提交是完全一样的。
+
+    注意到上面的`Fast-forward`信息，git告诉我们，这次合并是“快进模式”，也就是直接把`master`指向`dev`的当前提交，所以合并速度非常快。
+
+    当然，也不是每次合并都能`Fast-forward`，我们后面会讲其他方式的合并。
+
+    合并完成后，就可以放心地删除`dev`分支了：
+
+    ```shell
+    $ git branch -d dev
+    Deleted branch dev (was fec145a).
+    ```
+
+    删除
 
 * ####标签管理
 

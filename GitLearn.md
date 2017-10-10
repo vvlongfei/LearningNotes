@@ -305,6 +305,173 @@
 
     删除分支：`git branch -d <name>`
 
+  * 分支冲突解决
+
+    人生不如意之事十之八九，合并分支往往也不是一帆风顺的。
+
+    准备新的`feature1`分支，继续我们的新分支开发：
+
+    ```shell
+    $ git checkout -b feature1
+    Switched to a new branck 'feature1'
+    ```
+
+    修改readme.md最后一行，改为：
+
+    ```
+    Creating a new branch is quick AND simple.
+    ```
+
+    在`feature1`分支上提交：
+
+    ```shell
+    $ git add readme.md
+    $ git commit -m "AND simple"
+    [feature1 b3ff9c8] branch new test
+     1 file changed, 1 insertion(+), 1 deletion(-)
+    ```
+
+    切换到`master`分支：
+
+    ```shell
+    $ git checkout master
+    切换到分支 'master'
+    您的分支与上游分支 'origin/master' 一致。
+    ```
+
+    git还会自动提示我们当前`master`分支与远程的`master`分支一致。
+
+    在`master`分支上把readme.md文件的最后一行改为：
+
+    ```
+    Creating a new branch is quick & simple.
+    ```
+
+    提交：
+
+    ```shell
+    $ git add readMe.md 
+    $ git commit -m "& simple"
+    [master ba786c8] & simple
+     1 file changed, 1 insertion(+), 1 deletion(-)
+    ```
+
+    现在，`master`分支和`feature1`分支各自都分别有了新的提交，变成了这样：
+
+    ![branch_conflict](image/branch_conflict.png)
+
+    在这种情况下，git无法执行“快速合并”，只能试图把各自的修改合并起来，但这种合并就可能会有冲突，我们试试看：
+
+    ```shell
+    $ git merge feature1 
+    自动合并 readMe.md
+    冲突（内容）：合并冲突于 readMe.md
+    自动合并失败，修正冲突然后提交修正的结果。
+    ```
+
+    果然冲突了！git告诉我们，readme.md文件存在冲突，必须手动解决提交。`git status`也可以告诉我们冲突的文件：
+
+    ```shell
+    $ git status
+    位于分支 master
+    您的分支领先 'origin/master' 共 1 个提交。
+      （使用 "git push" 来发布您的本地提交）
+    您有尚未合并的路径。
+      （解决冲突并运行 "git commit"）
+      （使用 "git merge --abort" 终止合并）
+
+    未合并的路径：
+      （使用 "git add <文件>..." 标记解决方案）
+
+    	双方修改：   readMe.md
+
+    修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+    ```
+
+    * ```shell
+      git merge --abort （终止合并）
+      ```
+
+    我们也可以直接查看readme.md的内容：
+
+    ```shell
+    # 龙飞的传奇  
+
+    * git的尝试
+
+    * 龙的传奇
+
+    * command
+
+      > 梯子好
+      >
+      > My stupid boss still prefers SVN.  
+    <<<<<<< HEAD
+      > Creating a new branch is quick & simple.
+    =======
+      > Creating a new branch is quick AND simple.
+    >>>>>>> feature1
+    ```
+
+    git用`<<<<<<<`，`=======`，`>>>>>>>`标记出不同分支的内容，我们修改如下后保存：
+
+    ```shell
+    Creating a new branch is quick and simple.
+    ```
+
+    再提交：
+
+    ```shell
+    $ git add readme.md
+    $ git commit -m "conflict fixed"
+    [master dcdce3c] conflict fixed
+    ```
+
+    现在，`master`分支和`feature1`分支变成了下图所示：
+
+    ![branch_merge_afterconflict](image/branch_merge_afterconflict.png)
+
+    用带参数的`git log`也可以看到分支的合并情况：
+
+    ```shell
+    $ git log --graph --pretty=oneline --abbrev-commit
+    *   dcdce3c conflict fixed
+    |\  
+    | * b3ff9c8 AND simple
+    * | ba786c8 & simple
+    |/  
+    * 4392081 branch test
+    * f2ff8e1 修改origin后测试
+    * 27f25a7 远程服务器联系
+    * 819ee43 add test.md
+    * 16d8b0f 添加文件
+    * 3032375 第二次提交
+    * 3de6081 第一次尝试
+    ```
+
+    最后，删除`feature1`分支:
+
+    ```shell
+    $ git branch -d feature1 
+    已删除分支 feature1（曾为 b3ff9c8）。
+    ```
+
+    工作完成。
+
+    * 小结
+
+      当git无法自动合并分支时，就必须首先解决冲突。解决冲突后，再提交，合并完成。
+
+      用`git log --graph`命令可以看到分支合并图。
+
+  * 分支管理策略
+
+  * Bug分支
+
+  * Feature分支
+
+  * 多人协作
+
 * ####标签管理
 
 * ​

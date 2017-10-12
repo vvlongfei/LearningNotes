@@ -177,7 +177,9 @@
   > 现在有了分支，就不用怕了。你创建了一个属于自己的分支，别人看不到，还继续在原来的分支上正常工作，而你在自己的分支上干活，想提交就提交，直到开发完毕后，再一次性合并到原来的分支上，这样既安全，又不影响别人工作。
 
 
+
   > 其他版本控制系统如SVN等都有分支管理，但是用过了之后你会发现，这些版本控制系统创建和切换分支比蜗牛还慢，简直让人无法忍受，结果分之功能成了摆设，大家都不去用。
+
 
 
   > 但git的分支是与众不同的，无论创建、切换和删除分支，git在1秒钟之内就能完成！无论你的版本库是1个文件还是1万个文件。
@@ -210,7 +212,7 @@
 
   ![delete_dev_branck](image/delete_dev_branck.png)
 
-  * 创建分支
+*   创建分支
 
     ```shell
     $ git checkout -b dev
@@ -265,13 +267,13 @@
 
   现在，我们把`dev`分支的工作成果合并到`master`分支上：
 
-  ```shell
+```shell
   $ git merge dev
   Updating d17efd8..fec145a
   Fast-forward
    readme.txt |    1 +
    1 file changed, 1 insertion(+)
-  ```
+```
 
   `git merge`命令用于合并指定分支到当前分支。合并后，再查看readme.md的内容，就可以看到了，和`dev`分支的最新提交是完全一样的。
 
@@ -281,21 +283,21 @@
 
   合并完成后，就可以放心地删除`dev`分支了：
 
-  ```shell
+```shell
   $ git branch -d dev
   Deleted branch dev (was fec145a).
-  ```
+```
 
   删除后，查看`branch`，就剩下`master`分支了：
 
-  ```shell
+```shell
   $ git branch
   * master
-  ```
+```
 
   因为创建、合并和删除分支非常快，所以git鼓励你使用分支完成某个任务，合并后再删掉分支，这和直接在`master`分支上工作效果是一样的，但过程更加安全。
 
-  * ##### 总结
+*   ##### 总结
 
     查看分支：`git branch`
 
@@ -309,87 +311,87 @@
 
     删除分支：`git branch -d <name>`
 
-  * 分支冲突解决
+*   分支冲突解决
 
-    人生不如意之事十之八九，合并分支往往也不是一帆风顺的。
+      人生不如意之事十之八九，合并分支往往也不是一帆风顺的。
 
-    准备新的`feature1`分支，继续我们的新分支开发：
-
-    ```shell
-    $ git checkout -b feature1
-    Switched to a new branck 'feature1'
-    ```
-
-    修改readme.md最后一行，改为：
-
-    ```
-    Creating a new branch is quick AND simple.
-    ```
-
-    在`feature1`分支上提交：
+      准备新的`feature1`分支，继续我们的新分支开发：
 
     ```shell
-    $ git add readme.md
-    $ git commit -m "AND simple"
-    [feature1 b3ff9c8] branch new test
-     1 file changed, 1 insertion(+), 1 deletion(-)
+      $ git checkout -b feature1
+      Switched to a new branck 'feature1'
     ```
 
-    切换到`master`分支：
+      修改readme.md最后一行，改为：
+
+      ```
+      Creating a new branch is quick AND simple.
+      ```
+
+      在`feature1`分支上提交：
 
     ```shell
-    $ git checkout master
-    切换到分支 'master'
-    您的分支与上游分支 'origin/master' 一致。
+      $ git add readme.md
+      $ git commit -m "AND simple"
+      [feature1 b3ff9c8] branch new test
+       1 file changed, 1 insertion(+), 1 deletion(-)
     ```
 
-    git还会自动提示我们当前`master`分支与远程的`master`分支一致。
-
-    在`master`分支上把readme.md文件的最后一行改为：
-
-    ```
-    Creating a new branch is quick & simple.
-    ```
-
-    提交：
+      切换到`master`分支：
 
     ```shell
-    $ git add readMe.md 
-    $ git commit -m "& simple"
-    [master ba786c8] & simple
-     1 file changed, 1 insertion(+), 1 deletion(-)
+      $ git checkout master
+      切换到分支 'master'
+      您的分支与上游分支 'origin/master' 一致。
     ```
 
-    现在，`master`分支和`feature1`分支各自都分别有了新的提交，变成了这样：
+      git还会自动提示我们当前`master`分支与远程的`master`分支一致。
 
-    ![branch_conflict](image/branch_conflict.png)
+      在`master`分支上把readme.md文件的最后一行改为：
 
-    在这种情况下，git无法执行“快速合并”，只能试图把各自的修改合并起来，但这种合并就可能会有冲突，我们试试看：
+      ```
+      Creating a new branch is quick & simple.
+      ```
+
+      提交：
 
     ```shell
-    $ git merge feature1 
-    自动合并 readMe.md
-    冲突（内容）：合并冲突于 readMe.md
-    自动合并失败，修正冲突然后提交修正的结果。
+      $ git add readMe.md 
+      $ git commit -m "& simple"
+      [master ba786c8] & simple
+       1 file changed, 1 insertion(+), 1 deletion(-)
     ```
 
-    果然冲突了！git告诉我们，readme.md文件存在冲突，必须手动解决提交。`git status`也可以告诉我们冲突的文件：
+      现在，`master`分支和`feature1`分支各自都分别有了新的提交，变成了这样：
+
+      ![branch_conflict](image/branch_conflict.png)
+
+      在这种情况下，git无法执行“快速合并”，只能试图把各自的修改合并起来，但这种合并就可能会有冲突，我们试试看：
 
     ```shell
-    $ git status
-    位于分支 master
-    您的分支领先 'origin/master' 共 1 个提交。
-      （使用 "git push" 来发布您的本地提交）
-    您有尚未合并的路径。
-      （解决冲突并运行 "git commit"）
-      （使用 "git merge --abort" 终止合并）
+      $ git merge feature1 
+      自动合并 readMe.md
+      冲突（内容）：合并冲突于 readMe.md
+      自动合并失败，修正冲突然后提交修正的结果。
+    ```
 
-    未合并的路径：
-      （使用 "git add <文件>..." 标记解决方案）
+      果然冲突了！git告诉我们，readme.md文件存在冲突，必须手动解决提交。`git status`也可以告诉我们冲突的文件：
 
-    	双方修改：   readMe.md
+    ```shell
+      $ git status
+      位于分支 master
+      您的分支领先 'origin/master' 共 1 个提交。
+        （使用 "git push" 来发布您的本地提交）
+      您有尚未合并的路径。
+        （解决冲突并运行 "git commit"）
+        （使用 "git merge --abort" 终止合并）
 
-    修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
+      未合并的路径：
+        （使用 "git add <文件>..." 标记解决方案）
+
+      	双方修改：   readMe.md
+
+      修改尚未加入提交（使用 "git add" 和/或 "git commit -a"）
     ```
 
     * ```shell
@@ -468,53 +470,53 @@
 
       用`git log --graph`命令可以看到分支合并图。
 
-  * 分支管理策略
+*   分支管理策略
 
-    通常，合并分支时，如果可能，git会用`Fast forward`模式，但这种模式下，删除分支后，会丢掉分支信息。
+      通常，合并分支时，如果可能，git会用`Fast forward`模式，但这种模式下，删除分支后，会丢掉分支信息。
 
-    如果要强制禁用`Fast forward`模式，git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。
+      如果要强制禁用`Fast forward`模式，git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。
 
-    下面我们实战一下  `--no-ff` 方式的 `git merge`:
+      下面我们实战一下  `--no-ff` 方式的 `git merge`:
 
-    首先，仍然创建并切换`dev`分支:
+      首先，仍然创建并切换`dev`分支:
 
     ```shell
-    $ git checkout -b dev
-    Switched to a new branch 'dev'
+      $ git checkout -b dev
+      Switched to a new branch 'dev'
     ```
 
-    修改readme.md文件，并提交一个新的commit:
+      修改readme.md文件，并提交一个新的commit:
 
     ```shell
-    $ git add readMe.md
-    $ git commit -m "add merge"
-    [dev 690313c] add merge
-     1 file changed, 1 insertion(+)
+      $ git add readMe.md
+      $ git commit -m "add merge"
+      [dev 690313c] add merge
+       1 file changed, 1 insertion(+)
     ```
 
-    现在，我们切换回`master`:
+      现在，我们切换回`master`:
 
     ```shell
-    $ git checkout master
-    Switched to branch 'master'
-    Your branch is up-to-date with 'origin/master'.
+      $ git checkout master
+      Switched to branch 'master'
+      Your branch is up-to-date with 'origin/master'.
     ```
 
-    准备合并`dev`分支，请注意`--no-ff`参数，表示禁用`Fast forward`:
+      准备合并`dev`分支，请注意`--no-ff`参数，表示禁用`Fast forward`:
 
     ```shell
-    $ git merge --no-ff -m "merge with no-ff" dev
-    Merge made by the 'recursive' strategy.
-     readMe.md | 1 +
-     1 file changed, 1 insertion(+)
+      $ git merge --no-ff -m "merge with no-ff" dev
+      Merge made by the 'recursive' strategy.
+       readMe.md | 1 +
+       1 file changed, 1 insertion(+)
     ```
 
-    因为本次合并要创建一个新的commit，所以加上`-m`参数，把commit描述写进去。
+      因为本次合并要创建一个新的commit，所以加上`-m`参数，把commit描述写进去。
 
-    合并后，我们用`git log`看看分支历史：
+      合并后，我们用`git log`看看分支历史：
 
     ```shell
-    $ git log --graph --pretty=oneline --abbrev-commit
+      $ git log --graph --pretty=oneline --abbrev-commit
     *   d24be3d (HEAD -> master) merge with no-ff
     |\
     | * 690313c (dev) add merge
@@ -548,123 +550,123 @@
 
       合并分支时，加上`--no-ff`参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而`fast forward`合并就看不出来曾经做过合并。
 
-  * Bug分支
+*   Bug分支
 
-    软件开发中，bug就像家常便饭一样。有了bug就需要修复，在git中，由于分支是如此的强大，所以，每个bug都可以通过一个新的临时分支来修复，修复后，合并分支，然后将临时分支删除。
+      软件开发中，bug就像家常便饭一样。有了bug就需要修复，在git中，由于分支是如此的强大，所以，每个bug都可以通过一个新的临时分支来修复，修复后，合并分支，然后将临时分支删除。
 
-    当你接到一个修复一个代号101的bug的任务时，很自然地，你想创建一个分支`issue-101`来修复它，但是，等等，当前`dev`进行的共工作还没有提交：
+      当你接到一个修复一个代号101的bug的任务时，很自然地，你想创建一个分支`issue-101`来修复它，但是，等等，当前`dev`进行的共工作还没有提交：
 
     ```shell
-    $ git status
-    # On branch dev
-    # Changes to be committed:
-    #   (use "git reset HEAD <file>..." to unstage)
-    #
-    #       new file:   hello.py
-    #
-    # Changes not staged for commit:
-    #   (use "git add <file>..." to update what will be committed)
-    #   (use "git checkout -- <file>..." to discard changes in working directory)
-    #
-    #       modified:   readme.txt
-    #
+      $ git status
+      # On branch dev
+      # Changes to be committed:
+      #   (use "git reset HEAD <file>..." to unstage)
+      #
+      #       new file:   hello.py
+      #
+      # Changes not staged for commit:
+      #   (use "git add <file>..." to update what will be committed)
+      #   (use "git checkout -- <file>..." to discard changes in working directory)
+      #
+      #       modified:   readme.txt
+      #
     ```
 
-    并不是你不想提交，而是工作只进行到一半，还没发提交，预计完成还需1天时间。但是，必须在两个小时内修复bug，怎么办？
+      并不是你不想提交，而是工作只进行到一半，还没发提交，预计完成还需1天时间。但是，必须在两个小时内修复bug，怎么办？
 
-    幸好，git还提供了一个`stash`功能，可以把当前工作现场“存储”起来，等以后恢复现场后继续工作：
+      幸好，git还提供了一个`stash`功能，可以把当前工作现场“存储”起来，等以后恢复现场后继续工作：
 
     ```shell
-    $ git stash
-    Saved working directory and index state WIP on dev: 6224937 add merge
-    HEAD is now at 6224937 add merge
+      $ git stash
+      Saved working directory and index state WIP on dev: 6224937 add merge
+      HEAD is now at 6224937 add merge
     ```
 
-    现在，用`git status`查看工作区，就是干净的（除非有没有被git管理的文件），因此可以放心地创建分支来修复bug。
+      现在，用`git status`查看工作区，就是干净的（除非有没有被git管理的文件），因此可以放心地创建分支来修复bug。
 
-    首先，确定要在那个分支上修复bug，假定需要在`master`分支上修复，就在`master`创建临时分支：
+      首先，确定要在那个分支上修复bug，假定需要在`master`分支上修复，就在`master`创建临时分支：
 
     ```shell
-    $ git checkout master
-    Switched to branch 'master'
-    Your branch is ahead of 'origin/master' by 6 commits.
-    $ git checkout -b issue-101
-    Switched to a new branch 'issue-101'
+      $ git checkout master
+      Switched to branch 'master'
+      Your branch is ahead of 'origin/master' by 6 commits.
+      $ git checkout -b issue-101
+      Switched to a new branch 'issue-101'
     ```
 
-    现在修复bug，需要把`git is free software,,,`修改为`git is a free software,,,`，修改完后提交：
+      现在修复bug，需要把`git is free software,,,`修改为`git is a free software,,,`，修改完后提交：
 
     ```shell
-    $ git add readme.txt 
-    $ git commit -m "fix bug 101"
-    [issue-101 cc17032] fix bug 101
-     1 file changed, 1 insertion(+), 1 deletion(-)
+      $ git add readme.txt 
+      $ git commit -m "fix bug 101"
+      [issue-101 cc17032] fix bug 101
+       1 file changed, 1 insertion(+), 1 deletion(-)
     ```
 
-    修复完成后，切换到`master`分支，并完成合并，最后删除`issue-101`分支：
+      修复完成后，切换到`master`分支，并完成合并，最后删除`issue-101`分支：
 
     ```shell
-    $ git checkout master
-    Switched to branch 'master'
-    Your branch is ahead of 'origin/master' by 2 commits.
-    $ git merge --no-ff -m "merged bug fix 101" issue-101
-    Merge made by the 'recursive' strategy.
-     readme.txt |    2 +-
-     1 file changed, 1 insertion(+), 1 deletion(-)
-    $ git branch -d issue-101
-    Deleted branch issue-101 (was cc17032).
+      $ git checkout master
+      Switched to branch 'master'
+      Your branch is ahead of 'origin/master' by 2 commits.
+      $ git merge --no-ff -m "merged bug fix 101" issue-101
+      Merge made by the 'recursive' strategy.
+       readme.txt |    2 +-
+       1 file changed, 1 insertion(+), 1 deletion(-)
+      $ git branch -d issue-101
+      Deleted branch issue-101 (was cc17032).
     ```
 
-    太棒了，原计划两个小时的bug修复只花了5分钟！现在，是时候接着回到`dev`分支干活了！
+      太棒了，原计划两个小时的bug修复只花了5分钟！现在，是时候接着回到`dev`分支干活了！
 
     ```shell
-    $ git checkout dev
-    Switched to branch 'dev'
-    $ git status
-    # On branch dev
-    nothing to commit (working directory clean)
+      $ git checkout dev
+      Switched to branch 'dev'
+      $ git status
+      # On branch dev
+      nothing to commit (working directory clean)
     ```
 
-    工作区是干净的，刚才的工作现场存到哪里去了？用`git stash list`命令查看：
+      工作区是干净的，刚才的工作现场存到哪里去了？用`git stash list`命令查看：
 
     ```shell
-    $ git stash list
-    stash@{0}: WIP on dev: 6224937 add merge
+      $ git stash list
+      stash@{0}: WIP on dev: 6224937 add merge
     ```
 
-    工作现场还在，git把stash内容存在某个地方了，但是需要回复一下，有两个办法：
+      工作现场还在，git把stash内容存在某个地方了，但是需要回复一下，有两个办法：
 
-    一是用`git stash apply`恢复，但是恢复后，`stash`内容并不删除，你需要用`git stash drop`来删除；
+      一是用`git stash apply`恢复，但是恢复后，`stash`内容并不删除，你需要用`git stash drop`来删除；
 
-    另一种方式是用`git stash pop`，恢复的同时把`stash`内容也删了：
+      另一种方式是用`git stash pop`，恢复的同时把`stash`内容也删了：
 
     ```shell
-    $ git stash pop
-    # On branch dev
-    # Changes to be committed:
-    #   (use "git reset HEAD <file>..." to unstage)
-    #
-    #       new file:   hello.py
-    #
-    # Changes not staged for commit:
-    #   (use "git add <file>..." to update what will be committed)
-    #   (use "git checkout -- <file>..." to discard changes in working directory)
-    #
-    #       modified:   readme.txt
-    #
-    Dropped refs/stash@{0} (f624f8e5f082f2df2bed8a4e09c12fd2943bdd40)
+      $ git stash pop
+      # On branch dev
+      # Changes to be committed:
+      #   (use "git reset HEAD <file>..." to unstage)
+      #
+      #       new file:   hello.py
+      #
+      # Changes not staged for commit:
+      #   (use "git add <file>..." to update what will be committed)
+      #   (use "git checkout -- <file>..." to discard changes in working directory)
+      #
+      #       modified:   readme.txt
+      #
+      Dropped refs/stash@{0} (f624f8e5f082f2df2bed8a4e09c12fd2943bdd40)
     ```
 
-    再用`git stash list`查看，就看不到任何`stash`内容了：
+      再用`git stash list`查看，就看不到任何`stash`内容了：
 
     ```shell
-    $ git stash list
+      $ git stash list
     ```
 
-    你可以多次`stash`，恢复的时候，先用`git stash list`查看，然后恢复指定的`stash`，用命令:
+      你可以多次`stash`，恢复的时候，先用`git stash list`查看，然后恢复指定的`stash`，用命令:
 
     ```shell
-    $ git stash apply stash@{0}
+      $ git stash apply stash@{0}
     ```
 
     * **小结**
@@ -742,42 +744,42 @@
 
         如果要丢弃一个没有被合并过的分支，可以通过`git branch -D <branch name>`强行删除。
 
-  * 多人协作
+*   多人协作
 
-    当你从远程仓库克隆时，实际上git自动把本地的`master`分支和远程的`master`分支对应起来了，并且，远程仓库的默认名称是`origin`。
+      当你从远程仓库克隆时，实际上git自动把本地的`master`分支和远程的`master`分支对应起来了，并且，远程仓库的默认名称是`origin`。
 
-    要查看远程库的信息，用`git remote`:
-
-    ```shell
-    $ git remote
-    origin
-    ```
-
-    或者，用`git remote -v`显示更详细的信息：
+      要查看远程库的信息，用`git remote`:
 
     ```shell
-    $ git remote -v
-    origin  git@github.com:ShawnFeiyu/learngit.git (fetch)
-    origin  git@github.com:ShawnFeiyu/learngit.git (push)
+      $ git remote
+      origin
     ```
 
-    上面显示了可以抓取和推送的`origin`的地址。如果没有推送权限，就看不到，就看不到push的地址。
-
-    ### 推送分支
-
-    推送分支，就是把该分支上的所有本地提交推送到远程库。推送时，要指定本地分支，这样，git就会把该分支推送到远程库对于的分支上：
+      或者，用`git remote -v`显示更详细的信息：
 
     ```shell
-    $ git push origin master
+      $ git remote -v
+      origin  git@github.com:ShawnFeiyu/learngit.git (fetch)
+      origin  git@github.com:ShawnFeiyu/learngit.git (push)
     ```
 
-    如果要推送其他分支，比如`dev`，就改成：
+      上面显示了可以抓取和推送的`origin`的地址。如果没有推送权限，就看不到，就看不到push的地址。
+
+      ### 推送分支
+
+      推送分支，就是把该分支上的所有本地提交推送到远程库。推送时，要指定本地分支，这样，git就会把该分支推送到远程库对于的分支上：
 
     ```shell
-    $ git push origin dev
+      $ git push origin master
     ```
 
-    但是，并不是一定要把本地分支往远程推送，那么，哪些分支需要推送，哪些不需要呢？
+      如果要推送其他分支，比如`dev`，就改成：
+
+    ```shell
+      $ git push origin dev
+    ```
+
+      但是，并不是一定要把本地分支往远程推送，那么，哪些分支需要推送，哪些不需要呢？
 
     * `master`分支是主分支，因此要时刻与远程同步；
     * `dev`分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步；
@@ -920,7 +922,137 @@
     * 建立本地分支与远程分支的关联，使用`git branch --set-upstream branch-name origin/branch-name`；
     * 从远程抓取分支，使用`git pull`，如果有冲突，要先处理冲突。
 
-* ####标签管理
+*   ####标签管理
 
-* ​
+    发布一个版本时，我们通常先在版本库中打一个标签（tag），这样，就唯一确定了打标签时刻的版本。将来无论什么时候，取某个标签的版本，就是把那个打标签的时刻的历史版本取出来。所以，标签也是版本库的一个快照。
+
+    git的标签虽然是版本库的快照，但其实它就是指向某个committee的指针（跟分支很像对不对？但是分支可以移动，标签不能移动），所以，创建和删除标签都是瞬间完成的。
+
+    git有commit，为什么还要引入tag？
+
+    “请把上周一的那个版本打包发布，commit号是6a5819e...”
+
+    “一串乱七八糟的数字不好找！”
+
+    如果换一个办法：
+
+    “请把上一周的那个版本打包发布，版本号是v1.2”
+
+    “好的，按照tag v1.2查找commit就行！”
+
+    所以，tag就是一个让人容易记住的有意义的名字，它跟某个commit绑定在一起。
+
+    * 创建标签
+
+      在git中打标签非常简单，首先，切换要打标签的分支上：
+
+      ```shell
+      $ git branch
+      * dev
+        master
+      $ git checkout master
+      Switched to branch 'master'
+      ```
+
+      然后，敲命令`git tag <name>`就可以打一个新标签：
+
+      ```shell
+      $ git tag v1.0
+      ```
+
+      可以用命令`git tag`查看所有标签：
+
+      ```shell
+      $ git tag
+      v1.0
+      ```
+
+      默认标签是打在最新提交的commit上的。有时候，如果忘了打标签，比如，现在已经是周五了，但应该在周一打的标签没有打，怎么办？
+
+      方法是找到历史提交的commit id，然后打上就可以了：
+
+      ```shell
+      $ git log --pretty=oneline --abbrev-commit
+      6a5819e merged bug fix 101
+      cc17032 fix bug 101
+      7825a50 merge with no-ff
+      6224937 add merge
+      59bc1cb conflict fixed
+      400b400 & simple
+      75a857c AND simple
+      fec145a branch test
+      d17efd8 remove test.txt
+      ...
+      ```
+
+      比方说要对`add merge`这次提交打标签，它对应的`commit id`是：6224937，敲命令：
+
+      ```shell
+      $ git tag v0.9 6224937
+      ```
+
+      再用命令`git tag`查看标签：
+
+      ```shell
+      $ git tag
+      v0.9
+      v1.0
+      ```
+
+      注意，标签不是按时间顺序列出，而是按字母排序的。可以用`git show <tagname>`查看标签信息：
+
+      ```shell
+      $ git show v0.9
+      commit 622493706ab447b6bb37e4e2a2f276a20fed2ab4
+      Author: Michael Liao <askxuefeng@gmail.com>
+      Date:   Thu Aug 22 11:22:08 2013 +0800
+
+          add merge
+      ...
+      ```
+
+      可以看到，`v0.9`确实打在`add merge`这次提交上。
+
+      还可以创建带有说明的标签，用`-a`指定标签名，`-m`指定说明文字：
+
+      ```shell
+      $ git tag -a v0.1 -m "version 0.1 released" 3628164
+      ```
+
+      用命令`git show <tagname>`可以看到说明文字：
+
+      ```shell
+      $ git show v0.1
+      tag v0.1
+      Tagger: Michael Liao <askxuefeng@gmail.com>
+      Date:   Mon Aug 26 07:28:11 2013 +0800
+
+      version 0.1 released
+
+      commit 3628164fb26d48395383f8f31179f24e0882e1e0
+      Author: Michael Liao <askxuefeng@gmail.com>
+      Date:   Tue Aug 20 15:11:49 2013 +0800
+
+          append GPL
+      ```
+
+      还可以通过`-s`用私钥签名一个标签：
+
+      ```shell
+      $ git tag -s v0.2 -m "signed version 0.2 released" fec145a
+      ```
+
+      签名采用`PGP`签名，因此，必须首先安装gpg（GnuPG），如果没有找到gpg密钥对，就会报错：
+
+      ```shell
+      gpg: signing failed: secret key not available
+      error: gpg failed to sign the data
+      error: unable to sign the tag
+      ```
+
+      如果报错
+
+    * 操作标签
+
+*   ​
 

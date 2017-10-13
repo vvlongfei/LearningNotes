@@ -1,7 +1,7 @@
 # GitLearn
 
 * ```shell
-  $ git init`
+  $ git init
   ```
 
   将当前目录初始化为git可以管理的仓库。

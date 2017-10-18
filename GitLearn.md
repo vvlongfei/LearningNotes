@@ -55,7 +55,7 @@
       $ git reset --hard 3628164
       ```
     * `$ git reflog`
-      该命令将显示所以操作记录，如下：
+      该命令将显示所有操作记录，如下：
       ```shell
       $ git reflog
       ea34578 HEAD@{0}: reset: moving to HEAD^
@@ -245,7 +245,7 @@
        master
      ```
 
-     命令`git branch`会列出所有分支，当前分之前会标一个`*`号。
+     命令`git branch`会列出所有分支，当前分支前会标一个`*`号。
 
      然后，我们就可以在`dev`分支上正常提交，比如对`readme.md`做个修改，加上一行：
 
